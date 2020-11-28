@@ -14,14 +14,14 @@ class App:
         self.window = pg.display.set_mode((self._width, self._height))
         self._caption = 'Ловкая кнопка' 
         pg.display.set_caption(self._caption)
-        self._color_fon = (20, 20, 20)
+        self.background_image = pg.image.load('./images/BackgroundImage.jpg')
 
         # Settings framerate.
-        self._fps = 90
+        self._fps = 20
         self._clock = pg.time.Clock()
 
         # Create exemple button.
-        self._button_1 = button.Button(self.window, (90, 30), (250, 20, 20))
+        self._button_1 = button.Button(self.window, (90, 30), (20, 20, 250))
 
 
     def _close(self):
@@ -50,7 +50,7 @@ class App:
     def _draw(self):
         """Drawing all objects."""
 
-        self.window.fill(self._color_fon)
+        self.window.blit(self.background_image, (0, 0))
         self._button_1.draw()
         pg.display.update()
 

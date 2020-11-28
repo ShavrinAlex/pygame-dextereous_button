@@ -17,30 +17,36 @@ class Button:
         self._window = window
         self._width, self._height = size
         self._color = color
-        self._set_position()
+        self._pos_x = random.randrange(0, pg.display.get_window_size()[0] - self._width)
+        self._pos_y = random.randrange(0, pg.display.get_window_size()[1] - self._height)
 
         # Create surface button.
         self._object = pg.Surface((self._width, self._height))
         self._object.fill(self._color)
+        self._object_rect = self._object.get_rect(topleft=(self._pos_x, self._pos_y))
+
+        # Create text.
+        self.font = pg.font.SysFont(None, 24, True)
+        self.text = self.font.render('Click me!', True, pg.Color('white'))
+        self.text_rect = self.text.get_rect(center=(self._width//2, self._height//2))
+        self._object.blit(self.text, self.text_rect)
 
 
     def draw(self):
         """Drawing button in coordinates self._pos_x, self._pos_y."""
-
-        self._window.blit(self._object, (self._pos_x, self._pos_y))
         
+        self._window.blit(self._object, self._object_rect)
+       
     
     def check_collision_cursor(self):
         """Check collision cursor with button."""
-
-        mouse_x, mouse_y = pg.mouse.get_pos()
-        if mouse_x >= self._pos_x and mouse_x <= self._pos_x + self._width:
-            if mouse_y >= self._pos_y and mouse_y <= self._pos_y + self._height:
-                self._set_position()
+        
+        if self._object_rect.collidepoint(pg.mouse.get_pos()):
+            self._set_position()
 
     
     def _set_position(self):
         """Change self._pos_x and self._pos_y."""
 
-        self._pos_x = random.randrange(0, pg.display.get_window_size()[0] - self._width)
-        self._pos_y = random.randrange(0, pg.display.get_window_size()[1] - self._height)
+        self._object_rect.x = random.randrange(0, pg.display.get_window_size()[0] - self._width)
+        self._object_rect.y = random.randrange(0, pg.display.get_window_size()[1] - self._height)
